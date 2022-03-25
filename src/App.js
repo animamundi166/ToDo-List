@@ -1,10 +1,10 @@
 import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react'
+import ToDoInput from './ToDoInput';
 import ToDoItem from './ToDoItem';
 
 const App = () => {
 
-  const [text, setText] = useState('');
   const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('todos')) || []);
 
   useEffect(() => {
@@ -12,19 +12,14 @@ const App = () => {
   }, [todos])
 
 
-  const addTodo = () => {
-    if (text.trim() !== '') {
+  const addTodo = (text) => {
+    if (text) {
       const newToDo = {
         id: nanoid(),
         task: text,
         done: false,
       }
       setTodos([newToDo, ...todos]);
-      setText('');
-    }
-    else {
-      alert('Enter something');
-      setText('');
     }
   }
 
@@ -40,79 +35,50 @@ const App = () => {
     setTodos(copy);
   }
 
+  // const todoFilter = (status) => {
+  //   if (status === 'all') {
+  //     setTodos(todos);
+  //   } else {
+  //     const newTodos = todos.filter(todo => todo.id === status);
+  //     setTodos(newTodos);
+  //   }
+  // }
+
+
   return (
     <>
       <div className="container">
         <h1>TODO LIST</h1>
         <div className="ui divider"></div>
-        <div>
-          <div className="ui action input">
-            <input
-              className="mainInput"
-              type="text"
-              placeholder="Введите название задачи..."
-              onChange={e => setText(e.target.value)}
-              value={text}
-            />
-            <button
-              className="ui button addButton"
-              onClick={addTodo}
-            >
-              Добавить
-            </button>
-          </div>
-        </div>
+        <ToDoInput addTodo={addTodo} />
       </div>
 
+      {todos.length > 0 &&
 
-      <div id="container" className="container">
-        <div className="ui buttons tabs">
-          <button className="ui button blue">Все</button>
-          <button className="ui button">Активные</button>
-          <button className="ui button">Завершенные</button>
-        </div>
-        <div className="ui divider"></div>
+        <div id="container" className="container">
+          {/* <div className="ui buttons tabs">
+          <button className="ui button blue" onClick={() => todoFilter('all')}>Все</button>
+          <button className="ui button" onClick={() => todoFilter(true)}>Активные</button>
+          <button className="ui button" onClick={() => todoFilter(false)}>Завершенные</button>
+        </div> */}
+          {/* <div className="ui divider"></div>
         <div className="ui icon input search-input">
           <input className="searchInput" type="text" placeholder="Поиск" />
           <i className="inverted circular search icon"></i>
-        </div>
+        </div> */}
 
-        {todos.map((todo) => (
-          <div className="todo" key={todo.id}>
-            <label className="checkbox">
-              <input type="checkbox" onClick={() => toggleTodo(todo.id)} />
-              <div className="checkbox-icon"></div>
-            </label>
-            <span className="text">{todo.task}</span>
-            <button className="negative ui button" onClick={() => removeTodo(todo.id)}>Удалить</button>
-            <button className="circular ui icon button button-edit">
-              <i className="icon cog"></i>
-            </button>
+          <div className="list">
+            {todos.map((todo) => (
+              <ToDoItem
+                todo={todo}
+                key={todo.id}
+                toggleTodo={toggleTodo}
+                removeTodo={removeTodo}
+              />
+            ))}
           </div>
-        ))}
-
-
-
-
-
-        {/* <div className="todo--editable flex hidden">
-            <div className="ui small input input-edit">
-              <input type="text" value="Learn JS" placeholder="Введите новое название..." />
-            </div>
-            <button className="ui positive button small">Сохранить</button>
-            <button className="ui button small">Отмена</button>
-          </div> */}
-
-        {/* <div className="todo todo--active" data-id="16fftU82">
-            <label className="checkbox">
-              <input checked type="checkbox" />
-              <div className="checkbox-icon"></div>
-            </label>
-            <span className="text">Learn JS</span>
-            <button className="negative ui button">Удалить</button>
-          </div> */}
-
-      </div>
+        </div>
+      }
     </>
   )
 }

@@ -1,4 +1,4 @@
 Used Libraries:
-*React
-*nanoID
-*ClassNames
+* React
+* nanoID
+* ClassNames

@@ -1,18 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import cn from 'classnames';
 
-const ToDoItem = ({ todo, toggleTodo, removeTodo }) => {
+const ToDoItem = ({ todo, toggleTodo, removeTodo, changeTodoText }) => {
+
+  const [changedText, setChangedText] = useState(todo.task);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const handleChange = (e) => {
+    setChangedText(e.target.value);
+  }
+
+  const editText = (id, text) => {
+    changeTodoText(id, text);
+    setIsEdit(false);
+  }
+
+
   return (
-    <div className={cn("todo", { "todo--active": todo.done })} key={todo.id}>
-      <label className="checkbox">
-        <input type="checkbox" onClick={() => toggleTodo(todo.id)} />
-        <div className="checkbox-icon"></div>
-      </label>
-      <span className="text">{todo.task}</span>
-      <button className="negative ui button" onClick={() => removeTodo(todo.id)}>Удалить</button>
-      <button className="circular ui icon button button-edit">
-        <i className="icon cog"></i>
-      </button>
+    <div key={todo.id}>
+      <div className={cn("todo", { "todo--active": todo.done })} >
+        <label className="checkbox">
+          <input type="checkbox" onClick={() => toggleTodo(todo.id)} defaultChecked={todo.done} />
+          <div className="checkbox-icon"></div>
+        </label>
+        <span className="text">{todo.task}</span>
+        <button className="negative ui button" onClick={() => removeTodo(todo.id)}>Удалить</button>
+        <button className="circular ui icon button button-edit" onClick={() => setIsEdit(true)}>
+          <i className="icon cog"></i>
+        </button>
+      </div>
+      <div className={cn("todo--editable flex", { "hidden": !isEdit })}>
+        <div className="ui small input input-edit">
+          <input type="text"
+            value={changedText}
+            placeholder="Введите новое название..."
+            onChange={handleChange} />
+        </div>
+        <button className="ui positive button small" onClick={() => editText(todo.id, changedText)}>Сохранить</button>
+        <button className="ui button small" onClick={() => setIsEdit(false)}>Отмена</button>
+      </div>
     </div>
   )
 }

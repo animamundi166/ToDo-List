@@ -12,9 +12,9 @@ const App = () => {
   const [filteredData, setFilteredData] = useState(todos);
 
   useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos))
+    localStorage.setItem('todos', JSON.stringify(todos));
+    setFilteredData(todos);
   }, [todos])
-
 
   const addTodo = (text) => {
     if (text) {
@@ -58,8 +58,6 @@ const App = () => {
   const inputFilter = (e) => {
     setFilteredInputData(e.target.value);
   }
-  console.log(todos);
-
 
   return (
     <>
@@ -70,11 +68,11 @@ const App = () => {
 
       {todos.length > 0 &&
         <div id="container" className="container">
-          {/* <ToDoTabs todoFilter={todoFilter} /> */}
-          {/* <div className="ui divider"></div> */}
+          <ToDoTabs todoFilter={todoFilter} />
+          <div className="ui divider" />
           <SearchInput inputFilter={inputFilter} />
           <div className="list">
-            {todos
+            {filteredData
               .filter((todo) => todo.task.toLowerCase().includes(filteredInputData.toLowerCase()))
               .map((todo) => (
                 <ToDoItem

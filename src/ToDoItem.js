@@ -26,10 +26,11 @@ const ToDoItem = ({ todo, toggleTodo, removeTodo, changeTodoText }) => {
         <span className="text">{todo.task}</span>
         <button className="negative ui button" onClick={() => removeTodo(todo.id)}>Удалить</button>
         <button className="circular ui icon button button-edit" onClick={() => setIsEdit(true)}>
-          <i className="icon cog"></i>
+          <i className="icon edit outline"></i>
         </button>
       </div>
-      <div className={cn("todo--editable flex", { "hidden": !isEdit })}>
+
+      {isEdit && <div className="todo--editable flex">
         <div className="ui small input input-edit">
           <input type="text"
             value={changedText}
@@ -38,7 +39,7 @@ const ToDoItem = ({ todo, toggleTodo, removeTodo, changeTodoText }) => {
         </div>
         <button className="ui positive button small" onClick={() => editText(todo.id, changedText)}>Сохранить</button>
         <button className="ui button small" onClick={() => setIsEdit(false)}>Отмена</button>
-      </div>
+      </div>}
     </div>
   )
 }

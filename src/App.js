@@ -1,20 +1,32 @@
 import { nanoid } from 'nanoid';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import SearchInput from './SearchInput';
 import ToDoInput from './ToDoInput';
 import ToDoItem from './ToDoItem';
 import ToDoTabs from './ToDoTabs';
 
+
 const App = () => {
 
   const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('todos')) || []);
   const [filteredInputData, setFilteredInputData] = useState('');
-  const [filteredData, setFilteredData] = useState(todos);
+  const [tab, setTab] = useState(0);
 
   useEffect(() => {
     localStorage.setItem('todos', JSON.stringify(todos));
-    setFilteredData(todos);
   }, [todos])
+
+  const setFilterTab = (tab, todos) => {
+    if (tab === 0) {
+      return todos;
+    } else if (tab === 1) {
+      return todos.filter((todo) => !todo.done)
+    } else if (tab === 2) {
+      return todos.filter((todo) => todo.done)
+    }
+  }
+
+  const sortedTodos = setFilterTab(tab, todos);
 
   const addTodo = (text) => {
     if (text) {
@@ -46,15 +58,6 @@ const App = () => {
     setTodos(copy);
   }
 
-  const todoFilter = (status) => {
-    if (status === 'all') {
-      setFilteredData(todos);
-    } else {
-      const newTodos = todos.filter(todo => todo.done === status);
-      setFilteredData(newTodos);
-    }
-  }
-
   const inputFilter = (e) => {
     setFilteredInputData(e.target.value);
   }
@@ -68,11 +71,11 @@ const App = () => {
 
       {todos.length > 0 &&
         <div id="container" className="container">
-          <ToDoTabs todoFilter={todoFilter} />
+          <ToDoTabs setTab={setTab} />
           <div className="ui divider" />
           <SearchInput inputFilter={inputFilter} />
           <div className="list">
-            {filteredData
+            {sortedTodos
               .filter((todo) => todo.task.toLowerCase().includes(filteredInputData.toLowerCase()))
               .map((todo) => (
                 <ToDoItem

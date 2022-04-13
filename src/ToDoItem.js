@@ -15,7 +15,6 @@ const ToDoItem = ({ todo, toggleTodo, removeTodo, changeTodoText }) => {
     setIsEdit(false);
   }
 
-
   return (
     <div key={todo.id}>
       <div className={cn("todo", { "todo--active": todo.done })} >

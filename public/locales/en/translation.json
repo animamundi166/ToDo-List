@@ -1,0 +1,17 @@
+{
+  "title": "TODO LIST",
+  "add": "Add",
+  "placeholder": "Enter task description...",
+  "search": "Search",
+  "delete": "Delete",
+  "edit": {
+    "newTask": "Enter new description...",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "tab": {
+    "all": "All",
+    "active": "Active",
+    "completed": "Completed"
+  }
+}

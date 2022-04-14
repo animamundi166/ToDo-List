@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const ToDoInput = ({ addTodo }) => {
+const ToDoInput = ({ addTodo, t }) => {
 
   const [text, setText] = useState('');
 
@@ -25,7 +25,7 @@ const ToDoInput = ({ addTodo }) => {
         <input
           className="mainInput"
           type="text"
-          placeholder="Введите название задачи..."
+          placeholder={t("placeholder")}
           onChange={handleChange}
           onKeyDown={handleKeyPress}
           value={text}
@@ -34,7 +34,7 @@ const ToDoInput = ({ addTodo }) => {
           className="ui button addButton"
           onClick={handleSubmit}
         >
-          Добавить
+          {t("add")}
         </button>
       </div>
     </div>

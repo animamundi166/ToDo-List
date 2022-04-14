@@ -1,12 +1,21 @@
-import { nanoid } from 'nanoid';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
+import { nanoid } from 'nanoid';
 import SearchInput from './SearchInput';
 import ToDoInput from './ToDoInput';
 import ToDoItem from './ToDoItem';
 import ToDoTabs from './ToDoTabs';
 
-
 const App = () => {
+  const { t, i18n } = useTranslation();
+  const [langBtn, setlangBtn] = useState(false);
+  const [langs, setLangs] = useState(['en', 'ru']);
+
+  const toggleLanguage = () => {
+    setlangBtn(!langBtn);
+    setLangs(langs.reverse());
+    i18n.changeLanguage(langs[0]);
+  }
 
   const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('todos')) || []);
   const [filteredInputData, setFilteredInputData] = useState('');
@@ -20,9 +29,9 @@ const App = () => {
     if (tab === 0) {
       return todos;
     } else if (tab === 1) {
-      return todos.filter((todo) => !todo.done)
+      return todos.filter(todo => !todo.done)
     } else if (tab === 2) {
-      return todos.filter((todo) => todo.done)
+      return todos.filter(todo => todo.done)
     }
   }
 
@@ -40,7 +49,7 @@ const App = () => {
   }
 
   const removeTodo = (id) => {
-    const filteredToDos = todos.filter((todo) => todo.id !== id);
+    const filteredToDos = todos.filter(todo => todo.id !== id);
     setTodos(filteredToDos);
   }
 
@@ -65,15 +74,18 @@ const App = () => {
   return (
     <>
       <div className="container">
-        <h1>TODO LIST</h1>
-        <ToDoInput addTodo={addTodo} />
+        <div className="flex">
+          <h1>{t("title")}</h1>
+          <button className="ui grey basic button mini circular" onClick={toggleLanguage}>{langBtn ? 'EN' : "RU"}</button>
+        </div>
+        <ToDoInput addTodo={addTodo} t={t} />
       </div>
 
       {todos.length > 0 &&
         <div id="container" className="container">
-          <ToDoTabs setTab={setTab} />
+          <ToDoTabs setTab={setTab} t={t} />
           <div className="ui divider" />
-          <SearchInput inputFilter={inputFilter} />
+          <SearchInput inputFilter={inputFilter} t={t} />
           <div className="list">
             {sortedTodos
               .filter((todo) => todo.task.toLowerCase().includes(filteredInputData.toLowerCase()))
@@ -84,6 +96,7 @@ const App = () => {
                   toggleTodo={toggleTodo}
                   removeTodo={removeTodo}
                   changeTodoText={changeTodoText}
+                  t={t}
                 />
               ))}
           </div>

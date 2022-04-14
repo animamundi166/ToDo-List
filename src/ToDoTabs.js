@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ToDoTabs = ({ setTab }) => {
+const ToDoTabs = ({ setTab, t }) => {
 
   const [blueClass, setBlueClass] = useState(1);
 
@@ -10,19 +10,19 @@ const ToDoTabs = ({ setTab }) => {
         className={blueClass === 1 ? 'ui button blue' : 'ui button'}
         onClick={() => { setTab(0); setBlueClass(1) }}
       >
-        Все
+        {t("tab.all")}
       </button>
       <button
         className={blueClass === 2 ? 'ui button blue' : 'ui button'}
         onClick={() => { setTab(1); setBlueClass(2) }}
       >
-        Активные
+        {t("tab.active")}
       </button>
       <button
         className={blueClass === 3 ? 'ui button blue' : 'ui button'}
         onClick={() => { setTab(2); setBlueClass(3) }}
       >
-        Завершенные
+        {t("tab.completed")}
       </button>
     </div>
   )

@@ -133,6 +133,7 @@ html {
     align-items: center;
     width: 100%;
     justify-content: space-between;
+    margin-bottom: 15px;
 }
 
 .todo--editable {

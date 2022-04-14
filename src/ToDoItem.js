@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import cn from 'classnames';
 
-const ToDoItem = ({ todo, toggleTodo, removeTodo, changeTodoText }) => {
+const ToDoItem = ({ todo, toggleTodo, removeTodo, changeTodoText, t }) => {
 
   const [changedText, setChangedText] = useState(todo.task);
   const [isEdit, setIsEdit] = useState(false);
@@ -23,7 +23,7 @@ const ToDoItem = ({ todo, toggleTodo, removeTodo, changeTodoText }) => {
           <div className="checkbox-icon"></div>
         </label>
         <span className="text">{todo.task}</span>
-        <button className="negative ui button" onClick={() => removeTodo(todo.id)}>Удалить</button>
+        <button className="negative ui button" onClick={() => removeTodo(todo.id)}>{t("delete")}</button>
         <button className="circular ui icon button button-edit" onClick={() => setIsEdit(true)}>
           <i className="icon edit outline"></i>
         </button>
@@ -33,11 +33,11 @@ const ToDoItem = ({ todo, toggleTodo, removeTodo, changeTodoText }) => {
         <div className="ui small input input-edit">
           <input type="text"
             value={changedText}
-            placeholder="Введите новое название..."
+            placeholder={t("newTask")}
             onChange={handleChange} />
         </div>
-        <button className="ui positive button small" onClick={() => editText(todo.id, changedText)}>Сохранить</button>
-        <button className="ui button small" onClick={() => setIsEdit(false)}>Отмена</button>
+        <button className="ui positive button small" onClick={() => editText(todo.id, changedText)}>{t("edit.save")}</button>
+        <button className="ui button small" onClick={() => setIsEdit(false)}>{t("edit.cancel")}</button>
       </div>}
     </div>
   )
